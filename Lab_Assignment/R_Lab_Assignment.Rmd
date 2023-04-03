@@ -1,6 +1,6 @@
 ---
 title: "DS311 - R Lab Assignment"
-author: "Your Name"
+author: "Aaron Tsai"
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -35,10 +35,10 @@ a. Report the number of variables and observations in the data set.
 
 ```{r}
 # Enter your code here!
-
+dim(mtcars)
 
 # Answer:
-print("There are total of _____ variables and _____ observations in this data set.")
+print("There are total of 11 variables and 32 observations in this data set.")
 ```
 
 
@@ -47,10 +47,11 @@ b. Print the summary statistics of the data set and report how many discrete and
 
 ```{r}
 # Enter your code here!
-
+summary(mtcars)
+sapply(mtcars, class)
 
 # Answer:
-print("There are _____ discrete variables and _____ continuous variables in this data set.")
+print("There are 0 discrete variables and 11 continuous variables in this data set.")
 ```
 
 
@@ -59,11 +60,15 @@ c. Calculate the mean, variance, and standard deviation for the variable **mpg**
 
 ```{r}
 # Enter your code here!
+m <- mean(mtcars$mpg)
+v <- var(mtcars$mpg)
+s <- sd(mtcars$mpg)
 
+print(m)
+print(v)
+print(s)
 
-
-
-# print(paste("The average of Mile Per Gallon from this data set is ",  , " with variance ",  , " and standard deviation",  , "."))
+print(paste("The average of Mile Per Gallon from this data set is ", m , " with variance ", v , " and standard deviation", s , "."))
 ```
 
 
@@ -73,7 +78,11 @@ d. Create two tables to summarize 1) average mpg for each cylinder class and 2) 
 ```{r}
 # Enter your code here!
 
+avg_mpg_cyl <- aggregate(mpg ~ cyl, data = mtcars, FUN = mean)
+print(avg_mpg_cyl)
 
+sd_mpg_gear <- aggregate(mpg ~ gear, data = mtcars, FUN = sd)
+print(sd_mpg_gear)
 
 
 ```
@@ -84,9 +93,12 @@ e. Create a crosstab that shows the number of observations belong to each cylind
 
 ```{r}
 # Enter your code here!
+crosstab <- table(mtcars$cyl, mtcars$gear)
+
+print(crosstab)
 
 
-print("The most common car type in this data set is car with ____ cylinders and ____ gears. There are total of _____ cars belong to this specification in the data set.")
+print("The most common car type in this data set is car with 8 cylinders and 3 gears. There are total of 12 cars belong to this specification in the data set.")
 ```
 
 
@@ -106,23 +118,32 @@ data("PlantGrowth")
 head(PlantGrowth)
 
 # Enter your code here!
+library(ggplot2)
 
-
+ggplot(PlantGrowth, aes(x = group, y = weight)) +
+  geom_boxplot(bins = 0.5) +
+  labs(title = "Plant Weight per Group", x = "Group", y = "Weight")
 ```
 
 Result:
 
 => Report a paragraph to summarize your findings from the plot!
 
+I ended up creating a box plot for the seperate groups for each plant weight. After analyzing the plot, I've found that the trt2 group contains the heaviest weight, while trt1 contains the lightest weight. However, the ctrl group have the largest range compares to the other groups. 
+Lastly, for the median, the ctrl is around 5.3, trt1 is 4.5, and trt2 is 5.4.
 
 
 b. Using the **mtcars** data set, plot the histogram for the column **mpg** with 10 breaks. Give labels to the title, x-axis, and y-axis on the graph. Report the most observed mpg class from the data set.
 
 ```{r}
+ggplot(mtcars, aes(x = mpg)) +
+  geom_histogram(bins = 10) +
+  labs(title = "Distribution of MPG",
+       x = "Miles per Gallon",
+       y = "Count")
+mpg_hist <- hist(mtcars$mpg, breaks = 10)
 
-
-
-print("Most of the cars in this data set are in the class of ______ mile per gallon.")
+print("Most of the cars in this data set are in the class of 15 mile per gallon.")
 ```
 
 
@@ -137,7 +158,11 @@ data("USArrests")
 head(USArrests)
 
 # Enter your code here!
+pairs(USArrests, main = "Pairs Plot of US Arrests Data")
 
+ggplot(USArrests, aes(x = Murder, y = Assault)) +
+  geom_point() +
+  labs(title = "US Arrests: Murder vs. Assault", x = "Murder", y = "Assault")
 
 ```
 
@@ -145,6 +170,7 @@ Result:
 
 => Report a paragraph to summarize your findings from the plot!
 
+After analyzing the pair plot and scatter plot, there are some strong positive correlations between a number of different factors, such as between murder and rape as well as between murder and assault. Moreover, there is a moderate positive correlations between rape and assault. Generally speaking, all three categories of crime are more prevalent in the states with higher crime rates.
 
 
 ***
@@ -172,7 +198,17 @@ a. Create your own descriptive statistics and aggregation tables to summarize th
 head(housingData)
 
 # Enter your code here!
+summary(housingData)
 
+aggregate(cbind(Market.Value.per.SqFt, Boro) ~ Neighborhood, data = housingData, FUN = max)
+
+aggregate(cbind(Market.Value.per.SqFt, Boro) ~ Neighborhood, data = housingData, FUN = min)
+
+aggregate(cbind(Year.Built, Boro) ~ Neighborhood, data = housingData, FUN = min)
+
+aggregate(cbind(Year.Built) ~ Boro, data = housingData, FUN = max)
+
+aggregate(cbind(Year.Built) ~ Boro, data = housingData, FUN = min)
 
 ```
 
@@ -181,11 +217,22 @@ b. Create multiple plots to demonstrates the correlations between different vari
 ```{r}
 # Enter your code here!
 
+plot(housingData$Year.Built, housingData$Market.Value.per.SqFt, 
+     xlab = "Year Built", ylab = "Market Value per SqFt", 
+     main = "Market Value per SqFt vs. Year Built")
+
+boxplot(housingData$Market.Value.per.SqFt ~ housingData$Boro, 
+        xlab = "Borough", ylab = "Market Value per SqFt",
+        main = "Market Value per SqFt by Borough")
+
+hist(housingData$Year.Built, breaks = 20, 
+     xlab = "Year Built", ylab = "Frequency", 
+     main = "Distribution of Year Built by Borough")
 
 ```
 
 c. Write a summary about your findings from this exercise.
 
-=> Enter your answer here!
+=> After analyzing multiple plots, aggregation and statistics tables, the oldest house built in New York is in 1825 in Brooklyn. However, the newest house was built in 2010 in Brooklyn also and Queens. Furthermore, I made a histogram for the distribution of years built by borough and it seems to skewed left towards the 2000s. Additionally, Manhattan have the largest range for market value per square feet and Staten Island have the smallest range as for market value per square feet.
 
 
