@@ -1,7 +1,7 @@
 ---
 title: "DS311 - Basic R Lab Exercise"
-author: "Replace with Your Name"
-date: "1/10/2023"
+author: "Aaron Tsai"
+date: "3/30/2023"
 output:
   pdf_document: default
   html_document: default
@@ -89,14 +89,16 @@ b <- as.double(500)
 c <- as.character(500)
 
 # Enter your code here!
-
+typeof(a)
+typeof(b)
+typeof(c)
 
 
 # Check the data type of the new variable 'd'
 d <- a / b
 
 # Enter your code here!
-
+typeof(d)
 
 
 ```
@@ -146,13 +148,23 @@ is.matrix(m2)
 
 ### Challenge:
 
-1. Create a vector of the 26 alphabet lower case letters in sequence. 
+1. Create a vector of the 26 alphabet lower case letters in sequence.
+
 2. Create a 2 by 13 matrix for the 26 English upper case letter in sequence.
 
 Hint: Check out the "letters" and "LETTERS" key words in R.
 
 ```{r}
 # Enter your code here.
+
+v4 <- c(letters)
+v4
+is.vector(v4)
+
+e <- matrix(letters, nrow = 13, byrow = T)
+e
+is.matrix(e)
+
 
 
 
@@ -189,47 +201,47 @@ df2  # Makes a data frame with three different data types
 
 ``` {r}
 # Check your current working directory
-# wd1 <- getwd()
-# paste("Current Working Directory: ", wd1)
+wd1 <- getwd()
+paste("Current Working Directory: ", wd1)
 
 # Setting the working directory for a project
-# setwd("c://.../project")
-# wd2 <- getwd()
-# paste("Current Working Directory: ", wd2)
+setwd(file.choose())
+wd2 <- getwd()
+paste("Current Working Directory: ", wd2)
 ```
 
 ### Installing and Loading Packages
 
 ```{r, include=FALSE}
 # Install a new package, note the quotation marks
-# install.packages("mass")
+install.packages("mass")
 
 # Install multiple packages at once
-# install.packages(c("dplyr", "ggplot2"))
+install.packages(c("dplyr", "ggplot2"))
 
 # Loading the package, note no quotation marks
-# library(dplyr)
+library(dplyr)
 
 # Checking the package version
-# packageVersion("dplyr")
+packageVersion("dplyr")
 
 # List all functions in a package
-# ls("package:ggplot2")
+ls("package:ggplot2")
 
 # Loading a function from package
-# ggplot2::geom_line
+ggplot2::geom_line
 
 # Update all packages
-# update.packages()
+update.packages()
 
 # Unload a package
-# detach(package:ggplot2, unload=TRUE)
+detach(package:ggplot2, unload=TRUE)
 
 # Help function
-# help(dplyr)
+help(dplyr)
 
 # Checking the session info
-# sessionInfo()
+sessionInfo()
 ```
 
 ***
@@ -253,19 +265,21 @@ Once you finished and knit the RMarkdown file into html file, you should be able
 ```{r}
 # Write your code here!
 # Part a
-
+x <- 4
 
 # Part b
-
+y <- 12
 
 # Part c
-
+x
+y
 
 # Part d
 
 
 # Part e
-print(paste("y divided by x is equal to ", z))
+z <- y/x
+z
 
 
 # Do not need to change the following code!
